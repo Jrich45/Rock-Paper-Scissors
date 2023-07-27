@@ -1,96 +1,85 @@
-let human = 0;
-let computer = 0;
+const finalColumn = document.querySelector('[data-final-column]')
+const selectionButtons = document.querySelectorAll('[data-selection]')
+const computerScoreSpan = document.querySelector('[data-computer-score]')
+const humanScoreSpan = document.querySelector('[data-your-score]')
+const SELECTIONS = [
+    {
+        name: 'rock',
+        emoji: '✊',
+        beats: 'scissors'
 
-let choices = ["Rock", "Paper", "Scissors"];
-let playerSelection = prompt("Do you choose Rock, Paper or Scissors?")
-
-let computerSelection = getComputerChoice();
-let winner = playRound(playerSelection, computerSelection);
-
-
-
-function getComputerChoice() {
-    
-    choice = choices[Math.floor(Math.random() * choices.length)];
-    console.log(choice)
-    return choice;
-    
-  
-   
-   }
-
-
-function playRound(playerSelection, computerSelection) {
-    
-    if (playerSelection === "Rock") {
-        if (computerSelection === "Paper") {
-            console.log("You lose!");
-            computer++;
-            return ("You lose!");
-        } else if (computerSelection === "Scissors") {
-            console.log("You win!");
-            human++;
-            return ("You win!");
-        } else {
-            console.log("It's a tie!")
-            return ("It's a tie!");
-        }
+    },
+    {
+        name: 'paper',
+        emoji: '🤚',
+        beats: 'rock'
+    },
+    {
+        name: 'scissors',
+        emoji: '✌️',
+        beats: 'paper'
     }
-
-    if (playerSelection === "Paper") {
-        if(computerSelection === "Rock") {
-            console.log("You win!");
-            human++;
-            return ("You win");
-        } else if (computerSelection === "Scissors") {
-            console.log("You lose!");
-            computer++;
-            return ("You lose!");
-        } else {
-            console.log("It's a tie!")
-            return ("It's a tie!");
-        }
-    }
+]   
     
-    if (playerSelection === "Scissors") {
-        if (computerSelection === "Rock") {
-            console.log("You lose!");
-            computer++;
-            return ("You lose!");
-        } else if ( computerSelection === "Paper") {
-            console.log("You win!");
-            human++;
-            return ("You win!");
-        } else {
-            console.log("It's a tie!")
-            return ("It's a tie!");
-        }
-    }
-    return
+selectionButtons.forEach(selectionButton => {
+    selectionButton.addEventListener('click', e => {
+        const selectionName = selectionButton.dataset.selection
+        const selection = SELECTIONS.find(selection => selection.name === selectionName )
+        makeSelection(selection)
+        printWinner();
+    })
+})
+
+function makeSelection(selection) {
+    const pcSelection = computerSelection()
+    const yourWinner = isWinner(selection, pcSelection)
+    const computerWinner = isWinner(pcSelection, selection)
+    addSelectionResult(pcSelection, computerWinner)
+    addSelectionResult(selection, yourWinner)
+    
+    if (yourWinner) incrementScore(humanScoreSpan)
+    if (computerWinner) incrementScore(computerScoreSpan)
+
     
 }
+    
+function computerSelection() {
+    const randomPick = Math.floor(Math.random() * SELECTIONS.length)
+    return SELECTIONS[randomPick];
+}
 
+function isWinner(selection, opponetSelection) {
+    return selection.beats === opponetSelection.name
+}
 
-
-    function game(human, computer) {
-        let game = 0;
-        for (let i = 0; i < 5; i++) {
-            if (winner === "You lose") {
-                return computer++;
-            } else if (winner === "You win") {
-                return human++;
-            } else {
-                return;
-            } 
-
-        }
-
+function addSelectionResult(selection, winner) {
+    const div = document.createElement('div');
+    div.innerText = selection.emoji;
+    div.classList.add('result-selection')
+    if (winner) div.classList.add('winner')
+    finalColumn.after(div)
+        
     }
-    
-    
-    
-    
+   
 
+    function incrementScore(scoreSpan) {
+        scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1
+        if (humanScoreSpan.innerText >= 5) {
+            alert("You win")
+        }
+        if (computerScoreSpan.innerText >= 5) {
+            alert("You lose")
+        }
+    }
+
+    function printWinner(humanScoreSpan, computerScoreSpan) {
+        if (humanScoreSpan >= 5) {
+            return "You win"
+        }
+        if (computerScoreSpan >= 5) {
+            return "You Lose"
+        }
+    }
     
 
 
