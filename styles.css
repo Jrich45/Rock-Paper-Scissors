@@ -1,0 +1,36 @@
+.selections {
+    display: flex;
+    justify-content: center;
+}
+
+.selection {
+    width: auto;
+    height: 100px;
+    font-size: 2rem;
+    margin: 10px;
+    transition: .5s;
+    padding: 10px;
+}
+
+.selection:hover {
+    transform: scale(1.5);
+
+}
+
+.results {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    align-items: center;
+    font-size: 40px;
+}
+.result-score {
+    margin-left: 1rem;
+    font-size: 2rem;
+    color: red;
+}
+
+
+
+
